@@ -4,7 +4,7 @@
   "description": "Site note",
   "permissions": ["activeTab"],
   "background": {
-    "scripts": ["background.js"],
+    "scripts": ["scripts/background.js"],
     "persistent": false
   },
   "browser_action": {
