@@ -61,6 +61,13 @@ function addDnD(ref) {
 
       ref.style.left = pageX - shiftX - scrollX + "px";
       ref.style.top = pageY - shiftY - scrollY + "px";
+
+      const index = notes.findIndex(({ note }) => note === ref);
+      notes[index] = {
+        note: ref,
+        x: pageX - shiftX + "px",
+        y: pageY - shiftY + "px",
+      };
     }
 
     function onMouseMove(event) {
