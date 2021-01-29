@@ -1,3 +1,7 @@
+.hidden {
+  display: none;
+}
+
 .site-note-layout {
   position: fixed;
   top: 0;
@@ -25,4 +29,52 @@
   user-select: none;
 
   position: fixed;
+}
+
+.site-note-text-wrapper {
+  position: absolute;
+
+  top: 25px;
+  right: 7px;
+  width: 200px;
+  height: 100px;
+}
+
+.site-note-text-area {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  outline: 0;
+}
+
+.site-note-button {
+  border: none !important;
+  outline: 0 !important;
+  width: 15px;
+  height: 15px;
+  line-height: 15px;
+
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: transparent;
+  border-radius: 50%;
+
+  top: 105px;
+
+}
+
+.site-note-button:hover {
+  background-color: white;
+  border: 1px black solid !important;
+}
+
+.site-note-closed-button {
+  right: 2px;
+}
+
+.site-note-accept-button {
+  right: 25px;
 }

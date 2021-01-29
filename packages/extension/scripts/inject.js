@@ -7,7 +7,12 @@ document.body.appendChild(layer);
 
 layer.onmousedown = (evt) => {
   const { pageX, pageY } = evt;
-  if (evt.target.className && evt.target.className.startsWith("site-note "))
+  if (
+    evt.target.className &&
+    (evt.target.className.startsWith("site-note ") ||
+      evt.target.className.startsWith("site-note-text") ||
+      evt.target.className.startsWith("site-note-button"))
+  )
     return;
 
   const note = createNote(pageX, pageY);
@@ -41,6 +46,61 @@ function createNote(x, y) {
   );
 
   addDnD(note);
+
+  const textWrapper = document.createElement("div");
+  textWrapper.setAttribute(
+    "class",
+    `site-note-text-wrapper note-index-${noteIndex++}`
+  );
+
+  note.onclick = (evt) => {
+    console.log(evt.target.className);
+    if (
+      evt.target.className &&
+      evt.target.className.startsWith("site-note-text-area ")
+    )
+      return;
+
+    textWrapper.classList.toggle("hidden");
+  };
+
+  const textArea = document.createElement("textarea");
+  textArea.setAttribute(
+    "class",
+    `site-note-text-area note-index-${noteIndex++}`
+  );
+
+  const closedButton = document.createElement("button");
+  closedButton.innerHTML = "&times;";
+  closedButton.setAttribute(
+    "class",
+    `site-note-button site-note-closed-button note-index-${noteIndex++}`
+  );
+  closedButton.onclick = () => {
+    note.remove();
+  };
+
+  const acceptButton = document.createElement("button");
+  acceptButton.innerHTML = "&#43;";
+  acceptButton.setAttribute(
+    "class",
+    `site-note-button site-note-accept-button note-index-${noteIndex++}`
+  );
+  acceptButton.onclick = () => {
+    const index = notes.findIndex(
+      ({ note: existedNote }) => note === existedNote
+    );
+    notes[index] = {
+      ...notes[index],
+      text: "acb",
+    };
+    textWrapper.classList.toggle("hidden");
+  };
+
+  textWrapper.appendChild(textArea);
+  textWrapper.appendChild(closedButton);
+  textWrapper.appendChild(acceptButton);
+  note.appendChild(textWrapper);
   layer.appendChild(note);
 
   return note;
@@ -58,7 +118,7 @@ function addDnD(ref) {
     // taking initial shifts into account
     function moveAt(pageX, pageY) {
       const { scrollX, scrollY } = window;
-
+      console.log(notes);
       ref.style.left = pageX - shiftX - scrollX + "px";
       ref.style.top = pageY - shiftY - scrollY + "px";
 
