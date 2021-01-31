@@ -29,10 +29,39 @@ const serverlessConfiguration: AWS = {
       SiteNoteTable: {
         Type: "AWS::DynamoDB::Table",
         Properties: {
-          TableName: "SiteNoteTable-${self:provider.stage}",
+          TableName: "SiteNotesTable-${self:provider.stage}",
           BillingMode: "PAY_PER_REQUEST",
-          AttributeDefinitions: [{ AttributeName: "id", AttributeType: "S" }],
-          KeySchema: [{ AttributeName: "id", KeyType: "HASH" }],
+          AttributeDefinitions: [
+            {
+              AttributeName: "PK",
+              AttributeType: "S",
+            },
+            { AttributeName: "SK", AttributeType: "S" },
+            { AttributeName: "GSIPK_note", AttributeType: "S" },
+            { AttributeName: "GSISK_note", AttributeType: "S" },
+          ],
+          KeySchema: [
+            { AttributeName: "PK", KeyType: "HASH" },
+            { AttributeName: "SK", KeyType: "RANGE" },
+          ],
+          GlobalSecondaryIndexes: [
+            {
+              IndexName: "GSI_note",
+              KeySchema: [
+                {
+                  AttributeName: "GSIPK_note",
+                  KeyType: "HASH",
+                },
+                {
+                  AttributeName: "GSISK_note",
+                  KeyType: "RANGE",
+                },
+              ],
+              Projection: {
+                ProjectionType: "ALL", // (ALL | KEYS_ONLY | INCLUDE)
+              },
+            },
+          ],
         },
       },
     },
