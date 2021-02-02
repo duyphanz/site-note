@@ -23,6 +23,15 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
     },
+    iamRoleStatements: [
+      {
+        Effect: "Allow",
+        Action: ["dynamoDb:PutItem"],
+        Resource: {
+          "Fn::GetAtt": ["SiteNoteTable", "Arn"],
+        },
+      },
+    ],
   },
   resources: {
     Resources: {
@@ -77,6 +86,10 @@ const serverlessConfiguration: AWS = {
           },
         },
       ],
+    },
+    createNote: {
+      handler: "src/handlers/createNote.handler",
+      events: [{ http: { method: "POST", path: "note" } }],
     },
   },
 };
