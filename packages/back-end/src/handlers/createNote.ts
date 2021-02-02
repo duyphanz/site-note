@@ -1,5 +1,5 @@
 const AWS = require("aws-sdk");
-import createError from 'http-errors';
+import createError from "http-errors";
 import "source-map-support/register";
 
 import { commonMiddleware } from "../../lib/commonMiddleware";
@@ -8,17 +8,48 @@ async function createNote(event) {
   console.log("🚀 ~ file: createNote.ts ~ line 6 ~ createNote ~ event", event);
 
   const dynamoDB = new AWS.DynamoDB.DocumentClient();
-
-  const item = {
-    PK: "abc",
-    SK: "xyz",
-  };
-
   try {
     await dynamoDB
-      .put({
-        TableName: 'SiteNotesTable-dev',
-        Item: item,
+      .transactWrite({
+        TransactItems: [
+          {
+            Put: {
+              TableName: "SiteNotesTable-dev",
+              Item: {
+                PK: "USER#email",
+                SK: "LINK#abc.com",
+                GSIPK_note: "LINK#abc.com",
+                GSISK_note: "LINK#abc.com",
+              },
+            },
+          },
+          {
+            Put: {
+              TableName: "SiteNotesTable-dev",
+              Item: {
+                PK: "LINK#abc.com#NOTE#1",
+                SK: "LINK#abc.com#NOTE#1",
+                GSIPK_note: "LINK#abc.com",
+                GSISK_note: "NOTE#1",
+                position: { x: 10, y: 20 },
+                description: "day la note",
+              },
+            },
+          },
+          {
+            Put: {
+              TableName: "SiteNotesTable-dev",
+              Item: {
+                PK: "LINK#abc.com#NOTE#2",
+                SK: "LINK#abc.com#NOTE#2",
+                GSIPK_note: "LINK#abc.com",
+                GSISK_note: "NOTE#2",
+                position: { x: 40, y: 40 },
+                description: "day la note 2",
+              },
+            },
+          },
+        ],
       })
       .promise();
   } catch (error) {
@@ -27,7 +58,6 @@ async function createNote(event) {
 
   return {
     statusCode: 201,
-    body: JSON.stringify({ item }),
   };
 }
 
