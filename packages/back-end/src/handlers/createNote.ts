@@ -5,8 +5,6 @@ import "source-map-support/register";
 import { commonMiddleware } from "../../lib/commonMiddleware";
 
 async function createNote(event) {
-  console.log("🚀 ~ file: createNote.ts ~ line 6 ~ createNote ~ event", event);
-
   const dynamoDB = new AWS.DynamoDB.DocumentClient();
   try {
     await dynamoDB
@@ -27,9 +25,9 @@ async function createNote(event) {
             Put: {
               TableName: "SiteNotesTable-dev",
               Item: {
-                PK: "LINK#abc.com#NOTE#1",
-                SK: "LINK#abc.com#NOTE#1",
-                GSIPK_note: "LINK#abc.com",
+                PK: "USER#email#LINK#abc.com#NOTE#1",
+                SK: "USER#email#LINK#abc.com#NOTE#1",
+                GSIPK_note: "USER#email#LINK#abc.com",
                 GSISK_note: "NOTE#1",
                 position: { x: 10, y: 20 },
                 description: "day la note",
@@ -40,9 +38,9 @@ async function createNote(event) {
             Put: {
               TableName: "SiteNotesTable-dev",
               Item: {
-                PK: "LINK#abc.com#NOTE#2",
-                SK: "LINK#abc.com#NOTE#2",
-                GSIPK_note: "LINK#abc.com",
+                PK: "USER#email#LINK#abc.com#NOTE#2",
+                SK: "USER#email#LINK#abc.com#NOTE#2",
+                GSIPK_note: "USER#email#LINK#abc.com",
                 GSISK_note: "NOTE#2",
                 position: { x: 40, y: 40 },
                 description: "day la note 2",

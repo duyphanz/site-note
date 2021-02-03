@@ -26,10 +26,18 @@ const serverlessConfiguration: AWS = {
     iamRoleStatements: [
       {
         Effect: "Allow",
-        Action: ["dynamoDb:PutItem"],
-        Resource: {
-          "Fn::GetAtt": ["SiteNoteTable", "Arn"],
-        },
+        Action: ["dynamoDb:PutItem", "dynamodb:Query"],
+        Resource: [
+          {
+            "Fn::GetAtt": ["SiteNoteTable", "Arn"],
+          },
+          {
+            "Fn::Join": [
+              "/",
+              [{ "Fn::GetAtt": ["SiteNoteTable", "Arn"] }, "index/*"],
+            ],
+          },
+        ],
       },
     ],
   },
@@ -90,6 +98,10 @@ const serverlessConfiguration: AWS = {
     createNote: {
       handler: "src/handlers/createNote.handler",
       events: [{ http: { method: "POST", path: "note" } }],
+    },
+    getNotes: {
+      handler: "src/handlers/getNotes.handler",
+      events: [{ http: { method: "POST", path: "notes" } }],
     },
   },
 };
