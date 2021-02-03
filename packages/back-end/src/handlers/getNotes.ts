@@ -26,7 +26,7 @@ const getNotes: APIGatewayProxyHandler = async (event: any) => {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ notes: notes.Items }),
+      body: JSON.stringify(notes.Items),
     };
   } catch (error) {
     throw createError.InternalServerError(error);

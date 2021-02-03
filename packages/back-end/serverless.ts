@@ -84,17 +84,6 @@ const serverlessConfiguration: AWS = {
     },
   },
   functions: {
-    hello: {
-      handler: "handler.hello",
-      events: [
-        {
-          http: {
-            method: "get",
-            path: "hello",
-          },
-        },
-      ],
-    },
     createNote: {
       handler: "src/handlers/createNote.handler",
       events: [{ http: { method: "POST", path: "note" } }],
