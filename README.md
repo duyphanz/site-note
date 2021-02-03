@@ -1,3 +1,3 @@
 # site-note
 
-Place notes your any sites you visit!
+Place notes on any sites you visit!
