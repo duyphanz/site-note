@@ -2,6 +2,10 @@
   display: none;
 }
 
+.crosshair {
+  cursor: crosshair;
+}
+
 .site-note-layout {
   position: fixed;
   top: 0;
@@ -10,8 +14,13 @@
   height: 100vh;
   background-color: #519fe440;
   z-index: 10000;
+}
 
-  cursor: crosshair;
+.site-note-create-note-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10001;
 }
 
 .site-note {
@@ -63,7 +72,6 @@
   border-radius: 50%;
 
   top: 105px;
-
 }
 
 .site-note-button:hover {

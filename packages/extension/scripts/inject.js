@@ -1,17 +1,31 @@
 noteIndex = 1;
 notes = [];
+isPlacingNote = false;
 
 layer = document.createElement("div");
 layer.setAttribute("class", "site-note-layout");
+
+createNoteButton = document.createElement("button");
+createNoteButton.innerText = "+";
+createNoteButton.setAttribute("class", "site-note-create-note-button");
+createNoteButton.onclick = (evt) => {
+  togglePlacingNoteState();
+};
+
+layer.appendChild(createNoteButton);
+
+// render layout
 document.body.appendChild(layer);
 
 layer.onmousedown = (evt) => {
   const { pageX, pageY } = evt;
   if (
-    evt.target.className &&
-    (evt.target.className.startsWith("site-note ") ||
-      evt.target.className.startsWith("site-note-text") ||
-      evt.target.className.startsWith("site-note-button"))
+    !isPlacingNote ||
+    (evt.target.className &&
+      (evt.target.className.startsWith("site-note ") ||
+        evt.target.className.startsWith("site-note-text") ||
+        evt.target.className.startsWith("site-note-button"))) ||
+    evt.target.className.startsWith("site-note-create-note-button")
   )
     return;
 
@@ -34,12 +48,19 @@ document.addEventListener("scroll", (evt) => {
   });
 });
 
+function togglePlacingNoteState() {
+  layer.classList.toggle("crosshair");
+  isPlacingNote = !isPlacingNote;
+}
+
 function createNote(x, y) {
+  console.log("abc");
+  togglePlacingNoteState();
   const { scrollX, scrollY } = window;
 
   const note = document.createElement("div");
   note.innerText = noteIndex;
-  note.setAttribute("class", `site-note note-index-${noteIndex++}`);
+  note.setAttribute("class", `site-note note-index-${noteIndex}`);
   note.setAttribute(
     "style",
     `top:${y - scrollY - 10}px;left:${x - scrollX - 10}px`
@@ -50,11 +71,10 @@ function createNote(x, y) {
   const textWrapper = document.createElement("div");
   textWrapper.setAttribute(
     "class",
-    `site-note-text-wrapper note-index-${noteIndex++}`
+    `site-note-text-wrapper note-index-${noteIndex}`
   );
 
   note.onclick = (evt) => {
-    console.log(evt.target.className);
     if (
       evt.target.className &&
       evt.target.className.startsWith("site-note-text-area ")
@@ -65,16 +85,13 @@ function createNote(x, y) {
   };
 
   const textArea = document.createElement("textarea");
-  textArea.setAttribute(
-    "class",
-    `site-note-text-area note-index-${noteIndex++}`
-  );
+  textArea.setAttribute("class", `site-note-text-area note-index-${noteIndex}`);
 
   const closedButton = document.createElement("button");
   closedButton.innerHTML = "&times;";
   closedButton.setAttribute(
     "class",
-    `site-note-button site-note-closed-button note-index-${noteIndex++}`
+    `site-note-button site-note-closed-button note-index-${noteIndex}`
   );
   closedButton.onclick = () => {
     note.remove();
@@ -84,7 +101,7 @@ function createNote(x, y) {
   acceptButton.innerHTML = "&#43;";
   acceptButton.setAttribute(
     "class",
-    `site-note-button site-note-accept-button note-index-${noteIndex++}`
+    `site-note-button site-note-accept-button note-index-${noteIndex}`
   );
   acceptButton.onclick = () => {
     const index = notes.findIndex(
@@ -102,6 +119,7 @@ function createNote(x, y) {
   textWrapper.appendChild(acceptButton);
   note.appendChild(textWrapper);
   layer.appendChild(note);
+  noteIndex++;
 
   return note;
 }
@@ -118,7 +136,6 @@ function addDnD(ref) {
     // taking initial shifts into account
     function moveAt(pageX, pageY) {
       const { scrollX, scrollY } = window;
-      console.log(notes);
       ref.style.left = pageX - shiftX - scrollX + "px";
       ref.style.top = pageY - shiftY - scrollY + "px";
 
