@@ -1,6 +1,7 @@
 noteIndex = 1;
 notes = [];
 isPlacingNote = false;
+clickTime = null;
 
 layer = document.createElement("div");
 layer.setAttribute("class", "site-note-layout");
@@ -54,7 +55,6 @@ function togglePlacingNoteState() {
 }
 
 function createNote(x, y) {
-  console.log("abc");
   togglePlacingNoteState();
   const { scrollX, scrollY } = window;
 
@@ -75,13 +75,15 @@ function createNote(x, y) {
   );
 
   note.onclick = (evt) => {
-    if (
-      evt.target.className &&
-      evt.target.className.startsWith("site-note-text-area ")
-    )
-      return;
+    if (new Date() - clickTime < 150) {
+      if (
+        evt.target.className &&
+        evt.target.className.startsWith("site-note-text-area ")
+      )
+        return;
 
-    textWrapper.classList.toggle("hidden");
+      textWrapper.classList.toggle("hidden");
+    }
   };
 
   const textArea = document.createElement("textarea");
@@ -126,6 +128,8 @@ function createNote(x, y) {
 
 function addDnD(ref) {
   ref.onmousedown = function (event) {
+    clickTime = new Date();
+
     if (event.target.nodeName === "INPUT") return;
     let shiftX = event.clientX - ref.getBoundingClientRect().left;
     let shiftY = event.clientY - ref.getBoundingClientRect().top;
