@@ -75,7 +75,7 @@ function createNote(x, y) {
   );
 
   note.onclick = (evt) => {
-    if (new Date() - clickTime < 150) {
+    if (new Date() - clickTime < 200) {
       if (
         evt.target.className &&
         evt.target.className.startsWith("site-note-text-area ")
