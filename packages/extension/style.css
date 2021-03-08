@@ -1,3 +1,10 @@
+.sn {
+  all: initial;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .hidden {
   display: none;
 }
@@ -21,6 +28,9 @@
   top: 0;
   right: 0;
   z-index: 10001;
+  width: 200px;
+  height: 200px;
+  background-color: azure;
 }
 
 .site-note {

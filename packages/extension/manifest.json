@@ -5,8 +5,21 @@
   "permissions": ["activeTab"],
   "background": {
     "scripts": ["scripts/background.js"],
-    "persistent": false
+    "persistent": true
   },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "css": ["style.css"],
+      "js": [
+        "scripts/constants.js",
+        "scripts/HTMLElement.js",
+        "scripts/utils.js",
+        "scripts/selectors.js",
+        "scripts/inject.js"
+      ]
+    }
+  ],
   "browser_action": {
     "default_title": "Site note"
   },
