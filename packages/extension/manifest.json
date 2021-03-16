@@ -23,5 +23,6 @@
   "browser_action": {
     "default_title": "Site note"
   },
+  "web_accessible_resources": ["images/*"],
   "manifest_version": 2
 }

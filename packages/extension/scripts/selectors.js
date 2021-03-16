@@ -15,7 +15,12 @@ function getToggleButton(returnSelector) {
   return getSelector(".sn-toggle-button", returnSelector);
 }
 
+function getTextEditor(returnSelector) {
+  return getSelector(".sn-text-editor", returnSelector);
+}
+
 var SN_SELECTORS = {
   getLayer,
   getToggleButton,
+  getTextEditor,
 };
