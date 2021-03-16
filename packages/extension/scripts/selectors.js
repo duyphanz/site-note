@@ -8,14 +8,14 @@ function getSelector(selector, returnSelector = false) {
 }
 
 function getLayer(returnSelector) {
-  return getSelector(".site-note-layout", returnSelector);
+  return getSelector(".sn-layout", returnSelector);
 }
 
-function getCreateNoteButton(returnSelector) {
-  return getSelector(".site-note-create-note-button", returnSelector);
+function getToggleButton(returnSelector) {
+  return getSelector(".sn-toggle-button", returnSelector);
 }
 
 var SN_SELECTORS = {
   getLayer,
-  getCreateNoteButton,
+  getToggleButton,
 };

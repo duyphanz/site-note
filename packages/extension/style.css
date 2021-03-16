@@ -5,94 +5,29 @@
   box-sizing: border-box;
 }
 
-.hidden {
-  display: none;
-}
-
-.crosshair {
-  cursor: crosshair;
-}
-
-.site-note-layout {
+.sn-layout {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: #519fe440;
-  z-index: 10000;
-}
-
-.site-note-create-note-button {
-  position: absolute;
-  top: 0;
+  top: 50%;
   right: 0;
-  z-index: 10001;
+
+  display: block;
   width: 200px;
-  height: 200px;
-  background-color: azure;
+  height: 300px;
+  transform: translate(100%, -50%);
+  transition: transform 0.3s;
+
+  background-color: cadetblue;
 }
 
-.site-note {
-  width: 25px;
-  height: 25px;
-  line-height: 25px;
-  border-radius: 50%;
-  background-color: #263056;
-  color: white;
-  border: 1px white solid;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
-
-  position: fixed;
+.sn-layout.show {
+  transform: translate(0, -50%);
 }
 
-.site-note-text-wrapper {
+.sn-toggle-button {
   position: absolute;
-
-  top: 25px;
-  right: 7px;
-  width: 200px;
-  height: 100px;
+  top: 50%;
+  left: 0;
+  transform: translate(-100%, -50%);
+  background-color: coral;
 }
 
-.site-note-text-area {
-  width: 100%;
-  height: 100%;
-  border-radius: 5px;
-  outline: 0;
-}
-
-.site-note-button {
-  border: none !important;
-  outline: 0 !important;
-  width: 15px;
-  height: 15px;
-  line-height: 15px;
-
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background-color: transparent;
-  border-radius: 50%;
-
-  top: 105px;
-}
-
-.site-note-button:hover {
-  background-color: white;
-  border: 1px black solid !important;
-}
-
-.site-note-closed-button {
-  right: 2px;
-}
-
-.site-note-accept-button {
-  right: 25px;
-}
