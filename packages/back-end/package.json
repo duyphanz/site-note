@@ -4,7 +4,7 @@
   "description": "Serverless webpack example using Typescript",
   "main": "handler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy": "sls deploy"
   },
   "dependencies": {
     "@middy/core": "^2.0.0-alpha.4",
@@ -15,9 +15,6 @@
     "http-errors": "^1.8.0",
     "source-map-support": "^0.5.19",
     "uuid": "^8.3.2"
-  },
-  "engines": {
-    "node": ">=12.0.0"
   },
   "devDependencies": {
     "@serverless/typescript": "^2.12.0",

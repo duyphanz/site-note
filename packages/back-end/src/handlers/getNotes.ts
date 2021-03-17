@@ -16,10 +16,10 @@ const getNotes: APIGatewayProxyHandler = async (event: any) => {
     const notes = await dynamoDB
       .query({
         TableName: "SiteNotesTable-dev",
-        IndexName: "GSI_note",
-        KeyConditionExpression: "GSIPK_note = :PK",
+        KeyConditionExpression: "PK = :PK and SK = :SK",
         ExpressionAttributeValues: {
-          ":PK": `USER#${email}#LINK#${link}`,
+          ":PK": `USER#${email}`,
+          ":SK": `LINK#${link}`,
         },
       })
       .promise();

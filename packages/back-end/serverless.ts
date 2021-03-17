@@ -29,12 +29,12 @@ const serverlessConfiguration: AWS = {
         Action: ["dynamoDb:PutItem", "dynamodb:Query"],
         Resource: [
           {
-            "Fn::GetAtt": ["SiteNoteTable", "Arn"],
+            "Fn::GetAtt": ["SiteNotezTable", "Arn"],
           },
           {
             "Fn::Join": [
               "/",
-              [{ "Fn::GetAtt": ["SiteNoteTable", "Arn"] }, "index/*"],
+              [{ "Fn::GetAtt": ["SiteNotezTable", "Arn"] }, "index/*"],
             ],
           },
         ],
@@ -43,7 +43,7 @@ const serverlessConfiguration: AWS = {
   },
   resources: {
     Resources: {
-      SiteNoteTable: {
+      SiteNotezTable: {
         Type: "AWS::DynamoDB::Table",
         Properties: {
           TableName: "SiteNotesTable-${self:provider.stage}",
@@ -54,8 +54,6 @@ const serverlessConfiguration: AWS = {
               AttributeType: "S",
             },
             { AttributeName: "SK", AttributeType: "S" },
-            { AttributeName: "GSIPK_note", AttributeType: "S" },
-            { AttributeName: "GSISK_note", AttributeType: "S" },
           ],
           KeySchema: [
             { AttributeName: "PK", KeyType: "HASH" },
@@ -63,14 +61,14 @@ const serverlessConfiguration: AWS = {
           ],
           GlobalSecondaryIndexes: [
             {
-              IndexName: "GSI_note",
+              IndexName: "GSI_link",
               KeySchema: [
                 {
-                  AttributeName: "GSIPK_note",
+                  AttributeName: "SK",
                   KeyType: "HASH",
                 },
                 {
-                  AttributeName: "GSISK_note",
+                  AttributeName: "PK",
                   KeyType: "RANGE",
                 },
               ],
