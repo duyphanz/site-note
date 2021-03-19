@@ -5,7 +5,7 @@ import createError from "http-errors";
 import { commonMiddleware } from "../../lib/commonMiddleware";
 
 const getNotes: APIGatewayProxyHandler = async (event: any) => {
-  const { email, link } = event.body;
+  const { email, link } = JSON.parse(event.body);
 
   if (!email || !link) {
     throw createError.BadRequest("Missing required params");
