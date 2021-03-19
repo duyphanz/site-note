@@ -23,9 +23,14 @@ function getSaveButton(returnSelector) {
   return getSelector(".sn-save-button", returnSelector);
 }
 
+function getLoader(returnSelector) {
+  return getSelector(".sn-loader", returnSelector);
+}
+
 var SN_SELECTORS = {
   getLayer,
   getToggleButton,
   getTextEditor,
   getSaveButton,
+  getLoader,
 };

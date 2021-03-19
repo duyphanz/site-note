@@ -4,7 +4,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, response) {
   const sendResponse = (res) => chrome.tabs.sendMessage(sender.tab.id, res);
 
   function submitNote(res) {
-    console.log("Created note succesfully");
+    sendResponse({ type: SN_MESSAGES.SUBMIT_NOTE });
   }
 
   function fetchNoteInfo(res) {

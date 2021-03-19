@@ -7,11 +7,15 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const { type, payload } = msg;
 
   switch (type) {
+    case SN_MESSAGES.SUBMIT_NOTE:
+      SN_SELECTORS.getLoader().classList.add("visibility");
+      break;
     case SN_MESSAGES.FETCH_NOTE:
       if (payload && payload.note) {
         SN_SELECTORS.getTextEditor().innerHTML = payload.note;
         currentNote = payload.note;
       }
+      SN_SELECTORS.getLoader().classList.add("visibility");
       break;
   }
 });
@@ -45,6 +49,8 @@ function submitNote() {
 
   if (note) {
     currentNote = note;
+    SN_SELECTORS.getLoader().classList.remove("visibility");
+
     sendMessage({
       type: SN_MESSAGES.SUBMIT_NOTE,
       payload: { note, link: encodeURIComponent(window.location.href) },

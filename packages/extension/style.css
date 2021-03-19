@@ -16,6 +16,19 @@
   cursor: pointer;
 }
 
+.sn-loader {
+  background: transparent
+    url("chrome-extension://__MSG_@@extension_id__/images/loader.svg") no-repeat;
+
+  width: 30px;
+  background-size: contain;
+  margin-left: auto;
+}
+
+.sn-loader.visibility {
+  visibility: hidden;
+}
+
 .sn-layout {
   position: fixed;
   top: 50%;
@@ -49,7 +62,6 @@
 
   width: 30px;
   height: 30px;
-
 }
 
 .sn-layout.show .sn-toggle-button {
@@ -71,12 +83,15 @@
   border-radius: 6px 0 0 0;
 }
 
-.sn-save-button {
-  margin-left: auto;
+.sn-save-button:hover {
+  text-decoration: underline;
 }
 
 .sn-text-editor-toolbar > a {
   margin-right: 10px;
+  text-decoration: none !important;
+  color: #00458b;
+  cursor: pointer;
 }
 
 .sn-text-editor {
@@ -90,4 +105,10 @@
 
   padding: 15px;
   background-color: #eff1f8;
+}
+
+[contentEditable="true"]:empty:not(:focus):before {
+  content: "Text here ...";
+  color: grey;
+  font-style: italic;
 }
