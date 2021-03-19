@@ -1,15 +1,20 @@
 <template>
   <div class="container">
+    <p>Click on each link to see its note.</p>
+    <br />
+
     <ul>
       <li
         v-for="(note, index) in notes"
         :key="note.SK"
         @click="onItemClicked(index)"
       >
-        {{ note.SK }} {{ index }}
+        <div>{{ decodeURIComponent(note.SK.replace("LINK#", "")) }}</div>
       </li>
     </ul>
-    <pre>{{ currentNote }}</pre>
+    <br />
+    <br />
+    <div v-html="currentNote"></div>
   </div>
 </template>
 
@@ -35,14 +40,14 @@ export default Vue.extend({
     }
   },
   mounted() {
-    var raw = JSON.stringify({ email: "duyphan@yopmail.com", link: "it.com" });
+    var raw = JSON.stringify({ email: "duyphan@orgos.net" });
     var requestOptions = {
       method: "POST",
       body: raw
     };
 
     fetch(
-      "https://skh5jyyse7.execute-api.ap-southeast-1.amazonaws.com/dev/notes",
+      "https://skh5jyyse7.execute-api.ap-southeast-1.amazonaws.com/dev/notez",
       requestOptions
     )
       .then(response => response.json())
