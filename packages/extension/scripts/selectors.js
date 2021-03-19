@@ -19,8 +19,13 @@ function getTextEditor(returnSelector) {
   return getSelector(".sn-text-editor", returnSelector);
 }
 
+function getSaveButton(returnSelector) {
+  return getSelector(".sn-save-button", returnSelector);
+}
+
 var SN_SELECTORS = {
   getLayer,
   getToggleButton,
   getTextEditor,
+  getSaveButton,
 };

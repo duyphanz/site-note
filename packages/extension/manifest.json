@@ -2,9 +2,9 @@
   "name": "Site note",
   "version": "1.0",
   "description": "Site note",
-  "permissions": ["activeTab"],
+  "permissions": ["activeTab", "identity", "identity.email"],
   "background": {
-    "scripts": ["scripts/background.js"],
+    "scripts": ["scripts/constants.js", "scripts/background.js"],
     "persistent": true
   },
   "content_scripts": [

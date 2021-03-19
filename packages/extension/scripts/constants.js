@@ -1,0 +1,3 @@
+var SN_MESSAGES = {
+  SUBMIT_NOTE: "SUBMIT_NOTE",
+};
