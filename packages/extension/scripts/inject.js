@@ -1,4 +1,20 @@
+let currentNote = "";
+
 document.querySelector("html").insertAdjacentHTML("beforeend", htmlElement);
+
+// Listen for background script messages
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  const { type, payload } = msg;
+
+  switch (type) {
+    case SN_MESSAGES.FETCH_NOTE:
+      if (payload && payload.note) {
+        SN_SELECTORS.getTextEditor().innerHTML = payload.note;
+        currentNote = payload.note;
+      }
+      break;
+  }
+});
 
 addEvent(".sn-bold-handler", () => formatTextEditor("bold"));
 addEvent(".sn-italic-handler", () => formatTextEditor("italic"));
@@ -7,14 +23,18 @@ addEvent(".sn-underline-handler", () => formatTextEditor("underline"));
 addEvent(
   SN_SELECTORS.getToggleButton(true),
   () => {
-    SN_SELECTORS.getLayer().classList.add("show");
+    const container = SN_SELECTORS.getLayer();
+    if (!container.classList.contains("show") && !currentNote) {
+      sendMessage({
+        type: SN_MESSAGES.FETCH_NOTE,
+        payload: { link: encodeURIComponent(window.location.href) },
+      });
+    }
+
+    container.classList.toggle("show");
   },
   "mouseover"
 );
-
-addEvent(SN_SELECTORS.getToggleButton(true), () => {
-  SN_SELECTORS.getLayer().classList.remove("show");
-});
 
 addEvent(SN_SELECTORS.getSaveButton(true), () => {
   submitNote();
@@ -22,9 +42,9 @@ addEvent(SN_SELECTORS.getSaveButton(true), () => {
 
 function submitNote() {
   const note = SN_SELECTORS.getTextEditor().innerHTML;
-  console.log("🚀 ~ file: inject.js ~ line 25 ~ submitNote ~ note", note);
 
   if (note) {
+    currentNote = note;
     sendMessage({
       type: SN_MESSAGES.SUBMIT_NOTE,
       payload: { note, link: encodeURIComponent(window.location.href) },
