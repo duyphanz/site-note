@@ -84,11 +84,21 @@ const serverlessConfiguration: AWS = {
   functions: {
     createNote: {
       handler: "src/handlers/createNote.handler",
-      events: [{ http: { method: "POST", path: "note" } }],
+      events: [
+        {
+          http: {
+            method: "POST",
+            path: "note",
+            cors: { origin: "*" },
+          },
+        },
+      ],
     },
     getNotes: {
       handler: "src/handlers/getNote.handler",
-      events: [{ http: { method: "POST", path: "notes" } }],
+      events: [
+        { http: { method: "POST", path: "notes", cors: { origin: "*" } } },
+      ],
     },
   },
 };
