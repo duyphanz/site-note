@@ -3,7 +3,7 @@ import createError from "http-errors";
 import { commonMiddleware } from "../../lib/commonMiddleware";
 
 async function createNote(event) {
-  const { email, link, note } = event.body;
+  const { email, link, note } = JSON.parse(event.body);
   if (!email || !link) {
     throw createError.BadRequest("Missing required params");
   }
