@@ -1,75 +1,65 @@
 <template>
   <div class="container">
-    <div>
-      <Logo />
-      <h1 class="title">
-        front-end
-      </h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
-    </div>
+    <ul>
+      <li
+        v-for="(note, index) in notes"
+        :key="note.SK"
+        @click="onItemClicked(index)"
+      >
+        {{ note.SK }} {{ index }}
+      </li>
+    </ul>
+    <pre>{{ currentNote }}</pre>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue";
 
-export default Vue.extend({})
+declare interface Note {
+  note: string;
+  SK: string;
+  PK: string;
+}
+
+export default Vue.extend({
+  data() {
+    return {
+      notes: new Array<Note>(),
+      currentNote: ""
+    };
+  },
+  methods: {
+    onItemClicked(index: number) {
+      this.currentNote = this.notes[index].note;
+    }
+  },
+  mounted() {
+    var raw = JSON.stringify({ email: "duyphan@yopmail.com", link: "it.com" });
+    var requestOptions = {
+      method: "POST",
+      body: raw
+    };
+
+    fetch(
+      "https://skh5jyyse7.execute-api.ap-southeast-1.amazonaws.com/dev/notes",
+      requestOptions
+    )
+      .then(response => response.json())
+      .then(result => {
+        console.log(result);
+        this.notes = result;
+      })
+      .catch(error => console.log("error", error));
+  }
+});
 </script>
 
-<style>
+<style lang="scss" scoped>
 .container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
+  width: 80%;
+  min-height: 80vh;
 
-.title {
-  font-family:
-    'Quicksand',
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
+  background-color: cadetblue;
 }
 </style>
