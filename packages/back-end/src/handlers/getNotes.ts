@@ -4,10 +4,10 @@ import createError from "http-errors";
 
 import { commonMiddleware } from "../../lib/commonMiddleware";
 
-const getNote: APIGatewayProxyHandler = async (event: any) => {
-  const { email, link } = JSON.parse(event.body);
+const getNotes: APIGatewayProxyHandler = async (event: any) => {
+  const { email } = JSON.parse(event.body);
 
-  if (!email || !link) {
+  if (!email) {
     throw createError.BadRequest("Missing required params");
   }
 
@@ -16,10 +16,9 @@ const getNote: APIGatewayProxyHandler = async (event: any) => {
     const notes = await dynamoDB
       .query({
         TableName: "SiteNotesTable-dev",
-        KeyConditionExpression: "PK = :PK and SK = :SK",
+        KeyConditionExpression: "PK = :PK",
         ExpressionAttributeValues: {
           ":PK": `USER#${email}`,
-          ":SK": `LINK#${link}`,
         },
       })
       .promise();
@@ -33,4 +32,4 @@ const getNote: APIGatewayProxyHandler = async (event: any) => {
   }
 };
 
-export const handler = commonMiddleware(getNote);
+export const handler = commonMiddleware(getNotes);

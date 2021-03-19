@@ -94,10 +94,16 @@ const serverlessConfiguration: AWS = {
         },
       ],
     },
-    getNotes: {
+    getNote: {
       handler: "src/handlers/getNote.handler",
       events: [
         { http: { method: "POST", path: "notes", cors: { origin: "*" } } },
+      ],
+    },
+    getNotes: {
+      handler: "src/handlers/getNotes.handler",
+      events: [
+        { http: { method: "POST", path: "notez" } },
       ],
     },
   },
