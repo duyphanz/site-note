@@ -89,7 +89,7 @@
 .sn-text-editor-toolbar > a {
   margin-right: 10px;
   text-decoration: none !important;
-  color: #00458b;
+  color: #00458b !important;
   cursor: pointer;
 }
 
