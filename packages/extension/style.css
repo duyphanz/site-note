@@ -1,80 +1,114 @@
-.hidden {
-  display: none;
+.sn {
+  all: initial;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Noto Sans", Ubuntu, Cantarell, "Helvetica Neue", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: #00458b;
 }
 
-.site-note-layout {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: #519fe440;
-  z-index: 10000;
-
-  cursor: crosshair;
-}
-
-.site-note {
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
-  border-radius: 50%;
-  background-color: #263056;
-  color: white;
-  border: 1px white solid;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
-
-  position: fixed;
-}
-
-.site-note-text-wrapper {
-  position: absolute;
-
-  top: 25px;
-  right: 7px;
-  width: 200px;
-  height: 100px;
-}
-
-.site-note-text-area {
-  width: 100%;
-  height: 100%;
-  border-radius: 5px;
-  outline: 0;
-}
-
-.site-note-button {
-  border: none !important;
+.sn-btn {
   outline: 0 !important;
-  width: 15px;
-  height: 15px;
-  line-height: 15px;
-
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+  border: none;
   background-color: transparent;
-  border-radius: 50%;
-
-  top: 105px;
-
+  cursor: pointer;
 }
 
-.site-note-button:hover {
+.sn-loader {
+  background: transparent
+    url("chrome-extension://__MSG_@@extension_id__/images/loader.svg") no-repeat;
+
+  width: 30px;
+  background-size: contain;
+  margin-left: auto;
+}
+
+.sn-loader.visibility {
+  visibility: hidden;
+}
+
+.sn-layout {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  z-index: 1000000;
+
+  display: block;
+  width: 300px;
+  height: 500px;
+  transform: translate(100%, -50%);
+  transition: transform 0.3s;
+
+  box-shadow: rgba(175, 181, 199, 0.4) 0px 3px 10px 0px;
+}
+
+.sn-layout.show {
+  transform: translate(0, -50%);
+}
+
+.sn-toggle-button {
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  transform: translate(-100%, -50%) rotate(180deg);
+  transform-origin: center;
+
+  background: transparent
+    url("chrome-extension://__MSG_@@extension_id__/images/arrow.svg") no-repeat;
+
+  width: 30px;
+  height: 30px;
+}
+
+.sn-layout.show .sn-toggle-button {
+  transform: translate(-100%, -50%) rotate(0);
+}
+
+.sn-text-editor-container {
+  display: block;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.sn-text-editor-toolbar {
+  display: flex;
+  padding: 15px;
   background-color: white;
-  border: 1px black solid !important;
+  border-radius: 6px 0 0 0;
 }
 
-.site-note-closed-button {
-  right: 2px;
+.sn-save-button:hover {
+  text-decoration: underline;
 }
 
-.site-note-accept-button {
-  right: 25px;
+.sn-text-editor-toolbar > a {
+  margin-right: 10px;
+  text-decoration: none !important;
+  color: #00458b !important;
+  cursor: pointer;
+}
+
+.sn-text-editor {
+  flex: 1;
+  max-height: 452px;
+  overflow: auto;
+
+  outline: 0;
+  line-height: 25px;
+  font-size: 14px;
+
+  padding: 15px;
+  background-color: #eff1f8;
+  border-radius: 0 0 0 6px;
+
+}
+
+[contentEditable="true"]:empty:not(:focus):before {
+  content: "Text here ...";
+  color: grey;
+  font-style: italic;
 }

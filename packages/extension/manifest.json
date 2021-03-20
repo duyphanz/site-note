@@ -2,13 +2,27 @@
   "name": "Site note",
   "version": "1.0",
   "description": "Site note",
-  "permissions": ["activeTab"],
+  "permissions": ["activeTab", "identity", "identity.email"],
   "background": {
-    "scripts": ["scripts/background.js"],
-    "persistent": false
+    "scripts": ["scripts/constants.js", "scripts/background.js"],
+    "persistent": true
   },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "css": ["style.css"],
+      "js": [
+        "scripts/constants.js",
+        "scripts/HTMLElement.js",
+        "scripts/utils.js",
+        "scripts/selectors.js",
+        "scripts/inject.js"
+      ]
+    }
+  ],
   "browser_action": {
     "default_title": "Site note"
   },
+  "web_accessible_resources": ["images/*"],
   "manifest_version": 2
 }

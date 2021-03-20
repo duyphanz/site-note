@@ -1,150 +1,68 @@
-noteIndex = 1;
-notes = [];
+let currentNote = "";
 
-layer = document.createElement("div");
-layer.setAttribute("class", "site-note-layout");
-document.body.appendChild(layer);
+document.querySelector("html").insertAdjacentHTML("beforeend", htmlElement);
 
-layer.onmousedown = (evt) => {
-  const { pageX, pageY } = evt;
-  if (
-    evt.target.className &&
-    (evt.target.className.startsWith("site-note ") ||
-      evt.target.className.startsWith("site-note-text") ||
-      evt.target.className.startsWith("site-note-button"))
-  )
-    return;
+// Listen for background script messages
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  const { type, payload } = msg;
 
-  const note = createNote(pageX, pageY);
-  const { top, left } = note.style;
-  notes.push({ note, x: left, y: top });
-};
-
-document.addEventListener("keydown", (evt) => {
-  if (evt.key === "Escape") {
-    layer.remove();
+  switch (type) {
+    case SN_MESSAGES.SUBMIT_NOTE:
+      SN_SELECTORS.getLoader().classList.add("visibility");
+      break;
+    case SN_MESSAGES.FETCH_NOTE:
+      if (payload && payload.note) {
+        SN_SELECTORS.getTextEditor().innerHTML = payload.note;
+        currentNote = payload.note;
+      }
+      SN_SELECTORS.getLoader().classList.add("visibility");
+      break;
   }
 });
 
-document.addEventListener("scroll", (evt) => {
-  const { scrollX, scrollY } = window;
-  notes.forEach(({ note, x, y }) => {
-    note.style.top = +y.slice(0, -2) - scrollY + "px";
-    note.style.left = +x.slice(0, -2) - scrollX + "px";
-  });
+addEvent(".sn-bold-handler", () => formatTextEditor("bold"));
+addEvent(".sn-italic-handler", () => formatTextEditor("italic"));
+addEvent(".sn-underline-handler", () => formatTextEditor("underline"));
+
+addEvent(
+  SN_SELECTORS.getToggleButton(true),
+  () => {
+    const container = SN_SELECTORS.getLayer();
+    if (!container.classList.contains("show") && !currentNote) {
+      sendMessage({
+        type: SN_MESSAGES.FETCH_NOTE,
+        payload: { link: encodeURIComponent(window.location.href) },
+      });
+    }
+
+    container.classList.toggle("show");
+  },
+  "mouseover"
+);
+
+addEvent(SN_SELECTORS.getSaveButton(true), () => {
+  submitNote();
 });
 
-function createNote(x, y) {
-  const { scrollX, scrollY } = window;
+function submitNote() {
+  const note = SN_SELECTORS.getTextEditor().innerHTML;
 
-  const note = document.createElement("div");
-  note.innerText = noteIndex;
-  note.setAttribute("class", `site-note note-index-${noteIndex++}`);
-  note.setAttribute(
-    "style",
-    `top:${y - scrollY - 10}px;left:${x - scrollX - 10}px`
-  );
+  if (note) {
+    currentNote = note;
+    SN_SELECTORS.getLoader().classList.remove("visibility");
 
-  addDnD(note);
-
-  const textWrapper = document.createElement("div");
-  textWrapper.setAttribute(
-    "class",
-    `site-note-text-wrapper note-index-${noteIndex++}`
-  );
-
-  note.onclick = (evt) => {
-    console.log(evt.target.className);
-    if (
-      evt.target.className &&
-      evt.target.className.startsWith("site-note-text-area ")
-    )
-      return;
-
-    textWrapper.classList.toggle("hidden");
-  };
-
-  const textArea = document.createElement("textarea");
-  textArea.setAttribute(
-    "class",
-    `site-note-text-area note-index-${noteIndex++}`
-  );
-
-  const closedButton = document.createElement("button");
-  closedButton.innerHTML = "&times;";
-  closedButton.setAttribute(
-    "class",
-    `site-note-button site-note-closed-button note-index-${noteIndex++}`
-  );
-  closedButton.onclick = () => {
-    note.remove();
-  };
-
-  const acceptButton = document.createElement("button");
-  acceptButton.innerHTML = "&#43;";
-  acceptButton.setAttribute(
-    "class",
-    `site-note-button site-note-accept-button note-index-${noteIndex++}`
-  );
-  acceptButton.onclick = () => {
-    const index = notes.findIndex(
-      ({ note: existedNote }) => note === existedNote
-    );
-    notes[index] = {
-      ...notes[index],
-      text: "acb",
-    };
-    textWrapper.classList.toggle("hidden");
-  };
-
-  textWrapper.appendChild(textArea);
-  textWrapper.appendChild(closedButton);
-  textWrapper.appendChild(acceptButton);
-  note.appendChild(textWrapper);
-  layer.appendChild(note);
-
-  return note;
+    sendMessage({
+      type: SN_MESSAGES.SUBMIT_NOTE,
+      payload: { note, link: encodeURIComponent(window.location.href) },
+    });
+  }
 }
 
-function addDnD(ref) {
-  ref.onmousedown = function (event) {
-    if (event.target.nodeName === "INPUT") return;
-    let shiftX = event.clientX - ref.getBoundingClientRect().left;
-    let shiftY = event.clientY - ref.getBoundingClientRect().top;
+// methods
+function formatTextEditor(command, value) {
+  document.execCommand(command, false, value);
+}
 
-    moveAt(event.pageX, event.pageY);
-
-    // moves the div at (pageX, pageY) coordinates
-    // taking initial shifts into account
-    function moveAt(pageX, pageY) {
-      const { scrollX, scrollY } = window;
-      console.log(notes);
-      ref.style.left = pageX - shiftX - scrollX + "px";
-      ref.style.top = pageY - shiftY - scrollY + "px";
-
-      const index = notes.findIndex(({ note }) => note === ref);
-      notes[index] = {
-        note: ref,
-        x: pageX - shiftX + "px",
-        y: pageY - shiftY + "px",
-      };
-    }
-
-    function onMouseMove(event) {
-      moveAt(event.pageX, event.pageY);
-    }
-
-    // move the div on mousemove
-    document.addEventListener("mousemove", onMouseMove);
-
-    // drop the div, remove unneeded handlers
-    ref.onmouseup = function () {
-      document.removeEventListener("mousemove", onMouseMove);
-      ref.onmouseup = null;
-    };
-  };
-
-  ref.ondragstart = function () {
-    return false;
-  };
+function sendMessage(msg) {
+  chrome.runtime.sendMessage(msg);
 }
