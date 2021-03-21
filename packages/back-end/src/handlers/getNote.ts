@@ -1,19 +1,19 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
-const AWS = require("aws-sdk");
 import createError from "http-errors";
+import { dynamodb } from "../shares/dynamodb";
 
 import { commonMiddleware } from "../../lib/commonMiddleware";
 
 const getNote: APIGatewayProxyHandler = async (event: any) => {
-  const { email, link } = JSON.parse(event.body);
+  const { email, link } =
+    typeof event.body === "string" ? JSON.parse(event.body) : event.body;
 
   if (!email || !link) {
     throw createError.BadRequest("Missing required params");
   }
 
-  const dynamoDB = new AWS.DynamoDB.DocumentClient();
   try {
-    const notes = await dynamoDB
+    const notes = await dynamodb
       .query({
         TableName: "SiteNotesTable-dev",
         KeyConditionExpression: "PK = :PK and SK = :SK",
