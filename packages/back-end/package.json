@@ -4,7 +4,8 @@
   "description": "Serverless webpack example using Typescript",
   "main": "handler.js",
   "scripts": {
-    "deploy": "sls deploy"
+    "deploy": "sls deploy",
+    "start": "sls offline -s test --noEnvironment"
   },
   "dependencies": {
     "@middy/core": "1.5.2",
@@ -21,6 +22,8 @@
     "@types/aws-lambda": "^8.10.64",
     "@types/node": "^14.14.6",
     "fork-ts-checker-webpack-plugin": "^6.0.0",
+    "serverless-dynamodb-local": "^0.2.39",
+    "serverless-offline": "^6.8.0",
     "serverless-webpack": "^5.2.0",
     "ts-loader": "^8.0.10",
     "ts-node": "^9.0.0",

@@ -8,9 +8,19 @@ const serverlessConfiguration: AWS = {
       webpackConfig: "./webpack.config.js",
       includeModules: true,
     },
+    serverlessOffline: {
+      httpPort: 3024,
+    },
+    dynamodb: {
+      stages: ["dev"],
+    },
   },
   // Add the serverless-webpack plugin
-  plugins: ["serverless-webpack"],
+  plugins: [
+    "serverless-webpack",
+    "serverless-dynamodb-local",
+    "serverless-offline",
+  ],
   provider: {
     name: "aws",
     profile: "learning",
@@ -102,9 +112,7 @@ const serverlessConfiguration: AWS = {
     },
     getNotes: {
       handler: "src/handlers/getNotes.handler",
-      events: [
-        { http: { method: "POST", path: "notez" } },
-      ],
+      events: [{ http: { method: "POST", path: "notez" } }],
     },
   },
 };

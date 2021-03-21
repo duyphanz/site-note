@@ -24,21 +24,17 @@ addEvent(".sn-bold-handler", () => formatTextEditor("bold"));
 addEvent(".sn-italic-handler", () => formatTextEditor("italic"));
 addEvent(".sn-underline-handler", () => formatTextEditor("underline"));
 
-addEvent(
-  SN_SELECTORS.getToggleButton(true),
-  () => {
-    const container = SN_SELECTORS.getLayer();
-    if (!container.classList.contains("show") && !currentNote) {
-      sendMessage({
-        type: SN_MESSAGES.FETCH_NOTE,
-        payload: { link: encodeURIComponent(window.location.href) },
-      });
-    }
+addEvent(SN_SELECTORS.getToggleButton(true), () => {
+  const container = SN_SELECTORS.getLayer();
+  if (!container.classList.contains("show") && !currentNote) {
+    sendMessage({
+      type: SN_MESSAGES.FETCH_NOTE,
+      payload: { link: encodeURIComponent(window.location.href) },
+    });
+  }
 
-    container.classList.toggle("show");
-  },
-  "mouseover"
-);
+  container.classList.toggle("show");
+});
 
 addEvent(SN_SELECTORS.getSaveButton(true), () => {
   submitNote();

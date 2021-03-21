@@ -1,13 +1,14 @@
-const AWS = require("aws-sdk");
 import createError from "http-errors";
 import { commonMiddleware } from "../../lib/commonMiddleware";
+import { dynamodb } from "../shares/dynamodb";
 
 async function createNote(event) {
-  const { email, link, note } = JSON.parse(event.body);
+  const { email, link, note } =
+    typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+
   if (!email || !link) {
     throw createError.BadRequest("Missing required params");
   }
-  const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
   const noteItem = {
     PK: `USER#${email}`,
@@ -16,7 +17,7 @@ async function createNote(event) {
   };
 
   try {
-    await dynamoDB
+    await dynamodb
       .put({
         TableName: "SiteNotesTable-dev",
         Item: noteItem,
