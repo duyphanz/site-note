@@ -107,7 +107,7 @@
 
 }
 
-[contentEditable="true"]:empty:not(:focus):before {
+.sn-text-editor[contentEditable="true"]:empty:not(:focus):before {
   content: "Text here ...";
   color: grey;
   font-style: italic;
